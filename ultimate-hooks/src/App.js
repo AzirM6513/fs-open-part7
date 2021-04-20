@@ -19,24 +19,23 @@ const useResource = (baseUrl) => {
   const [resources, setResources] = useState([]);
 
   useEffect(() => {
-    async function getData() {
-      const res = await axios.get(baseUrl);
+    const getData = async () => {
+      const { status, data } = await axios.get(baseUrl);
 
-      if (res.status === 200) {
-        setResources(res.data);
+      if (status === 200) {
+        setResources(data);
       }
-
-      console.log(res.data);
-    }
+    };
 
     getData();
   }, [baseUrl]);
 
   const create = async (resource) => {
-    const { status, newResource } = await axios.post(baseUrl, resource);
+    await axios.post(baseUrl, resource);
+    const { status, data } = await axios.get(baseUrl);
 
     if (status === 200) {
-      setResources([...resources, newResource]);
+      setResources(data);
     }
   };
 
